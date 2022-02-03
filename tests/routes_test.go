@@ -1,4 +1,4 @@
-package controllers	
+package tests
 
 import (
 	"net/http"
@@ -6,8 +6,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/carloshdurante/geolocation_api/api/controllers"
 )
 
+var server = controllers.Server{}
 
 func checkResponseCode(t *testing.T, expected, actual int) {
 	if expected != actual {
@@ -23,7 +25,6 @@ func TestHealthCheckStatusOk(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 
-	server := Server{}
 	server.Initialize()
 	server.Router.HandleFunc("/health_check", server.HealthCheck).Methods("GET")
 	server.Router.ServeHTTP(rr, req)
@@ -39,7 +40,6 @@ func TestHealthCheckNotStatusOk(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 
-	server := Server{}
 	server.Initialize()
 	server.Router.HandleFunc("/health_check", server.HealthCheck).Methods("GET")
 	http.ResponseWriter(rr).WriteHeader(http.StatusInternalServerError)
