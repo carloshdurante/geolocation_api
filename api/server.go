@@ -2,6 +2,7 @@ package api
 
 import (
 	"os"
+
 	"github.com/carloshdurante/geolocation_api/api/controllers"
 )
 
@@ -13,6 +14,6 @@ func Run() {
 	if port == "" {
 		port = "8080"
 	}
+
 	server.Run(":" + port)
 }
-
