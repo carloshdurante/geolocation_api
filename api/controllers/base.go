@@ -1,18 +1,15 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
-	"gorm.io/gorm"
 	"github.com/gorilla/mux"
 	"github.com/carloshdurante/geolocation_api/api/database"
 )
 
 type Server struct {
 	Router *mux.Router
-	DB *gorm.DB
 }
 
 func (server *Server) Initialize(){
@@ -22,6 +19,6 @@ func (server *Server) Initialize(){
 }
 
 func (server *Server) Run(addr string) {
-	fmt.Println("Application's up.")
+	log.Println("Listening on port 8080")
 	log.Fatal(http.ListenAndServe(addr, server.Router))
 }
