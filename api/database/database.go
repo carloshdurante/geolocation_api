@@ -2,17 +2,15 @@ package database
 
 import (
 	"log"
-	"fmt"
 
-	"github.com/carloshdurante/geolocation_api/api/controllers"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var db *gorm.DB
 
-func StartDb(server *Server){
-	start := "postgres://username:password@localhost:5432/geolocation_api?sslmode=disable"
+func StartDb(){
+	start := ("postgres://root:123456@localhost:5432/api_golang_db?sslmode=disable")
 
 	database, err := gorm.Open(postgres.Open(start), &gorm.Config{})
 	if err != nil {
@@ -21,7 +19,5 @@ func StartDb(server *Server){
 
 	db = database
 
-
-	fmt.Println("Database connected.")
-	log.Print("Database connected.")
+	log.Println("Database is running")
 }
