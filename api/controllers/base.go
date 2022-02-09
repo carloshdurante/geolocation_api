@@ -4,15 +4,15 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/carloshdurante/geolocation_api/api/database"
+	"github.com/gorilla/mux"
 )
 
 type Server struct {
 	Router *mux.Router
 }
 
-func (server *Server) Initialize(){
+func (server *Server) Initialize() {
 	database.StartDb()
 	server.Router = mux.NewRouter()
 	server.initializeRoutes()

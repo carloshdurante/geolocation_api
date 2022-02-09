@@ -1,21 +1,15 @@
-package tests
+package controllers
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/carloshdurante/geolocation_api/api/controllers"
+	"github.com/stretchr/testify/assert"
 )
 
 var server = controllers.Server{}
-
-func checkResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
-		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
-	}
-}
 
 func TestHealthCheckStatusOk(t *testing.T) {
 	req, err := http.NewRequest("GET", "/health_check", nil)
