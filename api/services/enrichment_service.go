@@ -1,6 +1,7 @@
 package services
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -17,5 +18,25 @@ func EnrichmentService(postal_code string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
+	var apiResponse struct {
+		Results []struct {
+			Address struct {
+				StreetName         string
+				ExtendedPostalCode string
+			}
+			Position struct {
+				Lat int
+				Lon int
+			}
+		}
+	}
+
+	var result apiResponse
+	if err := json.Unmarshal(response.Body, &result); err != nil {
+		fmt.Println("Can not unmarshal JSON")
+	}
+	fmt.Println(result.Results)
+
 	return string(responseData), nil
 }
