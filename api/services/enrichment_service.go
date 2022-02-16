@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
-var ApiKey = "uzVaR3JVeMZD9d5Qmxj0OFNqVrT6o0ii"
-
 func EnrichmentService(postal_code string) (string, error) {
+	var ApiKey = os.Getenv("TOMTOM_API_KEY")
+
 	response, err := http.Get(fmt.Sprintf("https://api.tomtom.com/search/2/geocode/%s.json?storeResult=false&countrySet=BR&view=Unified&key=%s", postal_code, ApiKey))
 	if err != nil {
 		return "", err
