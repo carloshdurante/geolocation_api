@@ -5,11 +5,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/carloshdurante/geolocation_api/api/controllers"
 	"github.com/stretchr/testify/assert"
 )
 
-var server = controllers.Server{}
+var server = Server{}
 
 //Testing GET HealthCheck ok
 func TestHealthCheckStatusOk(t *testing.T) {
