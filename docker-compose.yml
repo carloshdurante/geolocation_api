@@ -1,0 +1,11 @@
+version: '3'
+services:
+  postgres:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=api_golang_db
+    ports:
+      - "5432:5432"
+
