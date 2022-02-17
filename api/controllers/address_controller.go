@@ -38,18 +38,22 @@ func (server *Server) GetAddressByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (server *Server) CreateAddress(w http.ResponseWriter, r *http.Request) {
+	var newAddress models.Address
+	json.NewDecoder(r.Body).Decode(&newAddress)
+
 	repository := repositories.AddressRepositoryDb{Db: database.GetDb()}
-	address, err := repository.Create(&models.Address{
-		Address:    r.FormValue("address"),
-		PostalCode: r.FormValue("postal_code"),
-		Latitude:   r.FormValue("latitude"),
-		Longitude:  r.FormValue("longitude"),
-	})
+	address, err := repository.Create(&newAddress)
+
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJSON(w, http.StatusCreated, address)
+
+	response_address := map[string]string{
+		"id": strconv.FormatUint(address.ID, 10),
+	}
+
+	respondWithJSON(w, http.StatusCreated, response_address)
 }
 
 func (server *Server) DeleteAddress(w http.ResponseWriter, r *http.Request) {
