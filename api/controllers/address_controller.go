@@ -2,12 +2,14 @@ package controllers
 
 import (
 	"encoding/json"
+	// "log"
 	"net/http"
 	"strconv"
 
 	"github.com/carloshdurante/geolocation_api/api/database"
 	"github.com/carloshdurante/geolocation_api/api/models"
 	"github.com/carloshdurante/geolocation_api/api/repositories"
+	// enrichmentAddress "github.com/carloshdurante/geolocation_api/api/services/enrichment_address"
 	"github.com/gorilla/mux"
 )
 
@@ -53,6 +55,12 @@ func (server *Server) CreateAddress(w http.ResponseWriter, r *http.Request) {
 		"id": strconv.FormatUint(address.ID, 10),
 	}
 
+	// enrichment := enrichmentAddress.DbConnection{Db: database.GetDb()}
+	// _, err = enrichment.StartEnrichment(address.Address, address.ID)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
 	respondWithJSON(w, http.StatusCreated, response_address)
 }
 
@@ -84,8 +92,8 @@ func (server *Server) UpdateAddress(w http.ResponseWriter, r *http.Request) {
 		ID:         id,
 		Address:    r.FormValue("address"),
 		PostalCode: r.FormValue("postal_code"),
-		Latitude:   r.FormValue("latitude"),
-		Longitude:  r.FormValue("longitude"),
+		// Latitude:   r.FormValue("latitude"),
+		// Longitude:  r.FormValue("longitude"),
 	})
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
