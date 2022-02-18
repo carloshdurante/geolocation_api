@@ -98,13 +98,17 @@ func (server *Server) UpdateAddress(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db := enrichmentAddress.DbConnection{Db: database.GetDb()}
-	db.StartEnrichment(newAddress.Address, id)
+	db.StartEnrichment(address.Address, address.ID)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, address)
+	response_address := map[string]uint64{
+		"id": id,
+	}
+
+	respondWithJSON(w, http.StatusOK, response_address)
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
