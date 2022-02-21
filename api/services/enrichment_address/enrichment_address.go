@@ -19,9 +19,11 @@ func (connection *DbConnection) StartEnrichment(params string, address_id uint64
 
 	repository := repositories.AddressRepositoryDb{Db: connection.Db}
 	address, err := repository.Update(address_id, &models.Address{
-		ID:        address_id,
-		Latitude:  response.Results[0].Position.Lat,
-		Longitude: response.Results[0].Position.Lon,
+		ID:         address_id,
+		Address: 	response.Results[0].Address.StreetName,
+		PostalCode: response.Results[0].Address.ExtendedPostalCode,
+		Latitude:   response.Results[0].Position.Lat,
+		Longitude:  response.Results[0].Position.Lon,
 	})
 	if err != nil {
 		return nil, err

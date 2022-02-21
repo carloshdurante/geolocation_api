@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	// "log"
+
 	"net/http"
 	"strconv"
 
@@ -84,31 +84,21 @@ func (server *Server) UpdateAddress(w http.ResponseWriter, r *http.Request) {
 	var newAddress models.Address
 	json.NewDecoder(r.Body).Decode(&newAddress)
 
-	repository := repositories.AddressRepositoryDb{Db: database.GetDb()}
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["id"], 10, 64)
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	address, err := repository.Update(id, &newAddress)
-	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
 
 	db := enrichmentAddress.DbConnection{Db: database.GetDb()}
-	db.StartEnrichment(address.Address, address.ID)
+	address, err := db.StartEnrichment(newAddress.Address, id)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	response_address := map[string]uint64{
-		"id": id,
-	}
-
-	respondWithJSON(w, http.StatusOK, response_address)
+	respondWithJSON(w, http.StatusOK, address)
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
