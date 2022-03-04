@@ -9,6 +9,7 @@ import (
 	"github.com/carloshdurante/geolocation_api/api/database"
 	"github.com/carloshdurante/geolocation_api/api/models"
 	"github.com/carloshdurante/geolocation_api/api/repositories"
+	"github.com/carloshdurante/geolocation_api/api/services/address"
 	enrichmentAddress "github.com/carloshdurante/geolocation_api/api/services/enrichment_address"
 	"github.com/gorilla/mux"
 )
@@ -44,7 +45,7 @@ func (server *Server) CreateAddress(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&newAddress)
 
 	repository := repositories.AddressRepositoryDb{Db: database.GetDb()}
-	address, err := repository.Create(&newAddress)
+	address, err := address.Create(&newAddress, &repository)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -98,7 +99,11 @@ func (server *Server) UpdateAddress(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, address)
+	response_address := map[string]uint64{
+	"id": address.ID,
+	}
+
+	respondWithJSON(w, http.StatusOK, response_address)
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
